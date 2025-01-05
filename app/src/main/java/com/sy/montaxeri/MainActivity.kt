@@ -3,17 +3,18 @@ package com.sy.montaxeri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sy.montaxeri.api.Api
 import com.sy.montaxeri.api.Note
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         coroutineScope.launch {
                             val data = api.getNotes()
                             if (data.isSuccessful) {
+                                notes.clear()
                                 data.body()?.let {
                                     notes.addAll(it.items)
                                 }
@@ -56,16 +58,33 @@ class MainActivity : ComponentActivity() {
                     }
                     LazyColumn {
                         items(items = notes) { note ->
-                            Column(
-                                modifier = Modifier.padding(16.dp)
+                            Card(
+                                shape = RoundedCornerShape(16.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                colors = CardDefaults.cardColors(Color.LightGray),
                             ) {
-                                // نمایش عنوان (Title)
-                                Text(
-                                    text = note.title,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                                // نمایش محتوا (Content)
-                                Text(text = note.content)
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp,
+                                                top = 16.dp,
+                                                end = 16.dp,
+                                                bottom =  8.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = note.title,
+                                        modifier = Modifier.padding(bottom = 8.dp),
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Text(
+                                        text = note.content,
+                                        textAlign = TextAlign.Center 
+                                    )
+                                }
                             }
                         }
                     }

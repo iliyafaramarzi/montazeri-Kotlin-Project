@@ -5,6 +5,6 @@ data class Note(
     val content: String,
     val created: String,
     val id: String,
-    val title: String, 
+    val title: String,
     val updated: String
 )
